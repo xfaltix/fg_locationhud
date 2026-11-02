@@ -95,3 +95,304 @@ body {
   opacity: 1;
   text-align: left;
 }
+
+
+:root {
+  --accent: #1fe0c4;
+  --accent-deep: #12b39b;
+  --panel-bg: rgba(18, 19, 26, 0.88);
+  --panel-border: rgba(255, 255, 255, 0.09);
+  --ease-out: cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.location_container.enter {
+  animation: ls1_enter 0.35s ease both;
+}
+
+@keyframes ls1_enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+body.drag_mode .location_container,
+body.drag_mode .ls2 {
+  outline: 2px dashed rgba(31, 224, 196, 0.75);
+  outline-offset: 5px;
+  cursor: move;
+  animation: drag_pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes drag_pulse {
+  0%, 100% { outline-color: rgba(31, 224, 196, 0.85); }
+  50% { outline-color: rgba(31, 224, 196, 0.3); }
+}
+
+.ls2 {
+  position: absolute;
+  top: 36vw;
+  left: 3vw;
+  width: 300px;
+  height: 64px;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+  transition: visibility 0s linear 0.45s;
+}
+
+.ls2.show {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.ls2_place,
+.ls2_card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.3s ease;
+}
+
+.ls2_place {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 8px);
+  height: 34px;
+  padding: 0 14px;
+  transform: translateY(10px);
+}
+
+.ls2_card {
+  display: flex;
+  height: 64px;
+  overflow: hidden;
+  transform: translateY(14px);
+}
+
+.ls2.show.has_pill .ls2_place {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.35s ease 0.05s, transform 0.5s var(--ease-out) 0.05s;
+}
+
+.ls2.show.has_card .ls2_card {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.35s ease 0.14s, transform 0.55s var(--ease-out) 0.14s;
+}
+
+.ls2_place_text {
+  display: block;
+  max-width: 100%;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ls2_info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding: 0 16px;
+}
+
+.ls2_street {
+  display: block;
+  color: #fff;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ls2_meta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  line-height: 1.1;
+}
+
+.ls2_meta_label {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.ls2_postal {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.ls2_compass {
+  position: relative;
+  width: 68px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  color: #06201c;
+  background: linear-gradient(160deg, #2cf0d4 0%, var(--accent-deep) 100%);
+  overflow: hidden;
+}
+
+.ls2_compass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.35) 50%, transparent 65%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+.ls2.show.has_card .ls2_compass::after {
+  animation: ls2_sheen 6s ease-in-out 1.2s infinite;
+}
+
+@keyframes ls2_sheen {
+  0%, 70% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+.ls2_arrow {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+  transition: transform 0.9s cubic-bezier(0.3, 0.7, 0.2, 1);
+  will-change: transform;
+}
+
+.ls2_dir {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.style_panel {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 250px;
+  padding: 14px;
+  color: #fff;
+  background: rgba(18, 19, 26, 0.94);
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -18px);
+  transition: opacity 0.25s ease, transform 0.4s var(--ease-out), visibility 0s linear 0.4s;
+}
+
+.style_panel.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+  transition-delay: 0s;
+}
+
+.style_panel_title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+}
+
+.seg {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+}
+
+.seg_thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  background: var(--accent);
+  border-radius: 6px;
+  transition: transform 0.35s cubic-bezier(0.3, 0.8, 0.2, 1);
+}
+
+.seg[data-active="2"] .seg_thumb {
+  transform: translateX(100%);
+}
+
+.seg_btn {
+  position: relative;
+  z-index: 1;
+  padding: 8px 0;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.seg_btn.active {
+  color: #06201c;
+}
+
+.style_done {
+  padding: 9px 0;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.style_done:hover {
+  background: var(--accent);
+  color: #06201c;
+}
+
+.style_done:active {
+  transform: scale(0.97);
+}
+
+.style_panel_hint {
+  font-size: 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+}

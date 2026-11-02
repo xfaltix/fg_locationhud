@@ -17,3 +17,4 @@ Config.Framework = 'esxnew' -- Options: 'esxnew' / 'esx'
 Config.HudMoveCommand = 'moveLocationHud' -- Command für die Verschiebung des HUDs
 Config.HudStopMoveCommand = 'stopMoveLocationHud' -- Command für die Stoppung der Verschiebung des HUDs
 Config.HudResetCommand = 'resetLocationHud' -- Command für den Reset der Verschiebung des HUDs
+Config.DefaultStyle = 1 -- 1 = Klassisch / 2 = Modern (nur Standard, die Auswahl des Spielers wird gespeichert)

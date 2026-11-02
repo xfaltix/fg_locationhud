@@ -45,6 +45,8 @@ Citizen.CreateThread(function()
             SendNUIMessage({
                 type = "updateLocation",
                 direction = GetDirection(heading),
+                heading = heading,
+                waypoint = IsWaypointActive(),
                 street = streetName,
                 postal = postalCode, -- Holt die PLZ vom Event
                 place = placeName
@@ -55,10 +57,19 @@ end)
 
 function GetDirection(heading)
     local directions = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}
-    local index = math.floor((heading + 22.5) / 45.0) + 1
+    local index = math.floor((((360.0 - heading) % 360.0) + 22.5) / 45.0) % 8 + 1
     return directions[index] or "N"
 end
 
+
+RegisterNUICallback('closeUI', function(_, cb)
+    SetNuiFocus(false, false)
+    cb('ok')
+end)
+
+RegisterNUICallback('nuiReady', function(_, cb)
+    cb({ defaultStyle = Config.DefaultStyle })
+end)
 
 RegisterCommand(Config.HudMoveCommand, function()
     SendNUIMessage({ action = "enableDrag" })
